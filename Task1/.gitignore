@@ -1,0 +1,7 @@
+#cmake generated folder
+cmake-build-debug
+# git
+.idea
+# my files
+study
+
