@@ -10,6 +10,7 @@
 
 /// TODO : rewrite this implementation to be cross-platform
 #define TRACKED_PATH "/home/" + qgetenv("USER") + "/Music"
+#define UNTRACKED_PATH "/home/" + qgetenv("USER")
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
@@ -38,7 +39,7 @@ private:
 	void InitPlaylist();
 	void InitScrollBar();
 	void InitAudioFiles();
-
+	void InitUntrackedAudioFiles();
 private slots:
 	void SetPlayingTrack();
 	void PlayAudio();

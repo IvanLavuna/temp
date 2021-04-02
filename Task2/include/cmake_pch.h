@@ -17,7 +17,7 @@
 #include <QMediaPlaylist>
 #include <QDirIterator>
 #include <QDebug>
+#include <QThread>
+#include <QDataStream>
 
-/// temp
-#include <iostream>
 #endif //MEDIAPLAYERAPP_PCH_H
