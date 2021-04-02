@@ -7,4 +7,17 @@
 
 #include <QApplication>
 #include <QWidget>
+#include <QMainWindow>
+#include <QAction>
+#include <QScrollArea>
+#include <QBoxLayout>
+#include <QPushButton>
+#include <QLabel>
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
+#include <QDirIterator>
+#include <QDebug>
+
+/// temp
+#include <iostream>
 #endif //MEDIAPLAYERAPP_PCH_H
