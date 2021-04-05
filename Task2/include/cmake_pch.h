@@ -19,6 +19,9 @@
 #include <QDebug>
 #include <QThread>
 #include <QDataStream>
-
+#include <QProgressBar>
+#include <QAudioProbe>
+#include <QStatusBar>
+#include <QSlider>
 
 #endif //MEDIAPLAYERAPP_PCH_H

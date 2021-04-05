@@ -23,7 +23,6 @@ ScrollButton::ScrollButton(const QIcon& icon, const QString &text, QWidget *pare
 }
 
 
-
 void ScrollButton::SetIndex(int index)
 {
 	m_index = index;

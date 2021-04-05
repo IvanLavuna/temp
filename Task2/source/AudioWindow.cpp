@@ -5,7 +5,7 @@
 #include "AudioWindow.h"
 
 AudioWindow::AudioWindow(QWidget* parent):
-	QMainWindow(parent)
+	QMainWindow(parent), m_trackDuration(0)
 {
 	this->InitWindow();
 	this->InitPlayer();
@@ -14,7 +14,10 @@ AudioWindow::AudioWindow(QWidget* parent):
 	this->InitAudioFiles();
 
 	/// TODO : this functions must be run in separate thread
-	this->InitUntrackedAudioFiles();
+//	this->InitUntrackedAudioFiles();
+
+	this->InitAudioProgress();
+	this->InitAudioButtons();
 }
 
 void AudioWindow::InitWindow()
@@ -25,11 +28,13 @@ void AudioWindow::InitWindow()
 void AudioWindow::InitPlayer()
 {
 	m_player = new QMediaPlayer;
+	connect(m_player, &QMediaPlayer::durationChanged,this,&AudioWindow::SetDuration);
 }
 
 void AudioWindow::InitPlaylist()
 {
 	m_playList = new QMediaPlaylist(m_player);
+	m_playList->setPlaybackMode(QMediaPlaylist::Loop);
 }
 
 void AudioWindow::InitScrollBar()
@@ -73,6 +78,7 @@ void AudioWindow::SetPlayingTrack()
 	{
 		qDebug() << ERROR_MESSAGE("qobject_cast failed.");
 	}
+
 }
 
 void AudioWindow::PlayAudio()
@@ -95,6 +101,59 @@ void AudioWindow::InitUntrackedAudioFiles()
 		connect(btn,SIGNAL(released()),this,SLOT(SetPlayingTrack()));
 	}
 }
+
+void AudioWindow::InitAudioProgress()
+{
+	m_slider = new QSlider(Qt::Horizontal,this);
+	m_slider->setGeometry(WINDOW_SZ_W / 4 + 10, WINDOW_SZ_H - 200, 500,20);
+	connect(m_player, &QMediaPlayer::positionChanged, this, &AudioWindow::SetSliderPosition);
+	connect(m_slider, &QSlider::sliderMoved, this, &AudioWindow::SetPlayer);
+}
+
+void AudioWindow::SetDuration(qint64 duration)
+{
+	m_trackDuration = duration;
+	m_slider->setRange(0, duration);
+}
+
+void AudioWindow::SetSliderPosition(qint64 pos)
+{
+	m_slider->setValue(pos);
+}
+
+void AudioWindow::InitAudioButtons()
+{
+	m_playTrackBtn = new QPushButton(this);
+	m_playTrackBtn->setGeometry(WINDOW_SZ_W / 4 + 50,WINDOW_SZ_H - 150,30,30);
+	m_playTrackBtn->setIcon(QIcon(PLAY_ICON_PATH));
+	m_playTrackBtn->setToolTip("play");
+	connect(m_playTrackBtn, &QPushButton::released, m_player, &QMediaPlayer::play);
+
+
+	m_stopTrackBtn = new QPushButton(this);
+	m_stopTrackBtn->setGeometry(WINDOW_SZ_W / 4 + 100,WINDOW_SZ_H - 150,30,30);
+	m_stopTrackBtn->setIcon(QIcon(STOP_ICON_PATH));
+	m_stopTrackBtn->setToolTip("stop");
+
+	connect(m_stopTrackBtn, &QPushButton::released, m_player, &QMediaPlayer::pause);
+
+
+	m_nextTrackBtn = new QPushButton(this);
+	m_nextTrackBtn->setGeometry(WINDOW_SZ_W / 4 + 150,WINDOW_SZ_H - 150,30,30);
+	m_nextTrackBtn->setIcon(QIcon(NEXT_ICON_PATH));
+	m_nextTrackBtn->setToolTip("next");
+	connect(m_nextTrackBtn,&QPushButton::released, m_playList,&QMediaPlaylist::next);
+}
+
+void AudioWindow::SetPlayer(qint64 pos)
+{
+	m_player->setPosition(pos);
+}
+
+
+
+
+
 
 
 
