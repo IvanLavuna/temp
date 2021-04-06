@@ -5,6 +5,7 @@
 #ifndef MEDIAPLAYERAPP_PCH_H
 #define MEDIAPLAYERAPP_PCH_H
 
+/// Qt
 #include <QApplication>
 #include <QWidget>
 #include <QMainWindow>
@@ -24,4 +25,7 @@
 #include <QStatusBar>
 #include <QSlider>
 
+/// taglib
+#include <taglib/tag.h>
+#include <taglib/fileref.h>
 #endif //MEDIAPLAYERAPP_PCH_H
