@@ -20,4 +20,4 @@ add_executable(${PROJECT_NAME} ${SOURCE})
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 
 target_precompile_headers(${PROJECT_NAME} PUBLIC include/cmake_pch.h)
-target_link_libraries(${PROJECT_NAME} ${REQUIRED_LIBS_QUALIFIED} -ltag )
+target_link_libraries(${PROJECT_NAME} ${REQUIRED_LIBS_QUALIFIED} -ltag -lz )

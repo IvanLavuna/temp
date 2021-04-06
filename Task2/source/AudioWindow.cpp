@@ -5,7 +5,7 @@
 #include "AudioWindow.h"
 
 AudioWindow::AudioWindow(QWidget* parent):
-	QMainWindow(parent), m_trackDuration(0)
+	QMainWindow(parent)
 {
 	this->InitWindow();
 	this->InitPlayer();
@@ -18,8 +18,10 @@ AudioWindow::AudioWindow(QWidget* parent):
 
 	this->InitAudioProgress();
 	this->InitAudioButtons();
+	this->InitAudioDataLabels();
 }
 
+/// Initialisation
 void AudioWindow::InitWindow()
 {
 	this->setFixedSize(WINDOW_SZ_W, WINDOW_SZ_H);
@@ -35,6 +37,8 @@ void AudioWindow::InitPlaylist()
 {
 	m_playList = new QMediaPlaylist(m_player);
 	m_playList->setPlaybackMode(QMediaPlaylist::Loop);
+	connect(m_playList, SIGNAL(currentIndexChanged(int)), this, SLOT(SetPlayingTrack(int)));
+
 }
 
 void AudioWindow::InitScrollBar()
@@ -55,35 +59,34 @@ void AudioWindow::InitAudioFiles()
 	int index = 0;
 	while (it.hasNext())
 	{
+		// adding audio to playlist
 		m_playList->addMedia(QUrl::fromLocalFile(it.next()));
-		auto* btn = new ScrollButton(it.fileName());
+
+		// audio meta information
+		auto* audioInfo = new TagLib::FileRef(it.filePath().toStdString().c_str());
+		ScrollButton *btn;
+
+		if(!audioInfo->tag()->title().isEmpty())
+		{
+			/// TODO : fix encoding of some characters to be proper on the screen
+			btn = new ScrollButton(audioInfo->tag()->title().substr(0,16).toCString());
+		}
+		else
+		{
+			btn = new ScrollButton(it.fileName().toStdString().substr(0,16).c_str());
+		}
+
+		// mapping audioBtn to audioInfo
+		m_btnInfoMap[btn] = audioInfo;
+
 		btn->SetIndex(index++);
+
 		m_audioButtons.push_back(btn);
 		m_audioButtons.back()->setFixedSize(WINDOW_SZ_W / 4 - 35,23);
 		m_scrollLayout->addWidget(m_audioButtons.back());
 		connect(btn,SIGNAL(released()),this,SLOT(SetPlayingTrack()));
 	}
 	m_scroll->setWidget(m_scrollWidget);
-}
-
-void AudioWindow::SetPlayingTrack()
-{
-	auto* button = qobject_cast<ScrollButton*>(sender());
-	if (button)
-	{
-		m_playList->setCurrentIndex(button->GetIndex());
-		PlayAudio();
-	}
-	else
-	{
-		qDebug() << ERROR_MESSAGE("qobject_cast failed.");
-	}
-
-}
-
-void AudioWindow::PlayAudio()
-{
-	m_player->play();
 }
 
 void AudioWindow::InitUntrackedAudioFiles()
@@ -100,25 +103,6 @@ void AudioWindow::InitUntrackedAudioFiles()
 		m_scrollLayout->addWidget(m_audioButtons.back());
 		connect(btn,SIGNAL(released()),this,SLOT(SetPlayingTrack()));
 	}
-}
-
-void AudioWindow::InitAudioProgress()
-{
-	m_slider = new QSlider(Qt::Horizontal,this);
-	m_slider->setGeometry(WINDOW_SZ_W / 4 + 10, WINDOW_SZ_H - 200, 500,20);
-	connect(m_player, &QMediaPlayer::positionChanged, this, &AudioWindow::SetSliderPosition);
-	connect(m_slider, &QSlider::sliderMoved, this, &AudioWindow::SetPlayer);
-}
-
-void AudioWindow::SetDuration(qint64 duration)
-{
-	m_trackDuration = duration;
-	m_slider->setRange(0, duration);
-}
-
-void AudioWindow::SetSliderPosition(qint64 pos)
-{
-	m_slider->setValue(pos);
 }
 
 void AudioWindow::InitAudioButtons()
@@ -145,14 +129,128 @@ void AudioWindow::InitAudioButtons()
 	connect(m_nextTrackBtn,&QPushButton::released, m_playList,&QMediaPlaylist::next);
 }
 
+void AudioWindow::InitAudioDataLabels()
+{
+	// title
+	m_audioDataLabel["title"].general = new QLabel("title: ", this);
+	m_audioDataLabel["title"].general->setGeometry(200,200,50,25);
+	m_audioDataLabel["title"].specific = new QLabel("...", this);
+	m_audioDataLabel["title"].specific->setGeometry(260, 200,350,25);
+	m_audioDataLabel["title"].specific->setStyleSheet("border: 2px dotted gray");
+
+	// genre
+	m_audioDataLabel["genre"].general = new QLabel("genre: ", this);
+	m_audioDataLabel["genre"].general->setGeometry(200,240,50,25);
+	m_audioDataLabel["genre"].specific = new QLabel("...", this);
+	m_audioDataLabel["genre"].specific->setGeometry(260, 240,350,25);
+	m_audioDataLabel["genre"].specific->setStyleSheet("border: 2px dotted gray");
+
+	// album
+	m_audioDataLabel["album"].general = new QLabel("album: ", this);
+	m_audioDataLabel["album"].general->setGeometry(200,280,50,25);
+	m_audioDataLabel["album"].specific = new QLabel("...", this);
+	m_audioDataLabel["album"].specific->setGeometry(260, 280,350,25);
+	m_audioDataLabel["album"].specific->setStyleSheet("border: 2px dotted gray");
+}
+
+void AudioWindow::InitAudioProgress()
+{
+	m_slider = new QSlider(Qt::Horizontal,this);
+	m_slider->setGeometry(WINDOW_SZ_W / 4 + 10, WINDOW_SZ_H - 200, 500,20);
+	connect(m_player, &QMediaPlayer::positionChanged, this, &AudioWindow::SetSliderPosition);
+	connect(m_slider, &QSlider::sliderMoved, this, &AudioWindow::SetPlayer);
+}
+
+/// slots
+void AudioWindow::SetPlayingTrack()
+{
+	auto* button = qobject_cast<ScrollButton*>(sender());
+	if (button)
+	{
+		m_playList->setCurrentIndex(button->GetIndex());
+		PlayAudio();
+		ChangeCurrentBtn(button);
+		DisplayAudioMetaData();
+	}
+	else
+	{
+		qDebug() << ERROR_MESSAGE("qobject_cast failed.");
+	}
+}
+
+void AudioWindow::PlayAudio()
+{
+	m_player->play();
+}
+
+void AudioWindow::SetDuration(qint64 duration)
+{
+	m_slider->setRange(0, duration);
+}
+
+void AudioWindow::SetSliderPosition(qint64 pos)
+{
+	m_slider->setValue(pos);
+}
+
 void AudioWindow::SetPlayer(qint64 pos)
 {
 	m_player->setPosition(pos);
 }
 
+void AudioWindow::SetPlayingTrack(int pos)
+{
+	auto* button = m_audioButtons[pos];
+	if (button)
+	{
+		m_playList->setCurrentIndex(button->GetIndex());
+		PlayAudio();
+		ChangeCurrentBtn(button);
+		DisplayAudioMetaData();
+	}
+	else
+	{
+		qDebug() << ERROR_MESSAGE("qobject_cast failed.");
+	}
+}
 
+/// core
+void AudioWindow::DisplayAudioMetaData()
+{
+	// title
+	if(!m_btnInfoMap[m_curAudioBtn]->tag()->title().isEmpty())
+		m_audioDataLabel["title"].specific->setText(m_btnInfoMap[m_curAudioBtn]->tag()->title().toCString());
+	else
+		m_audioDataLabel["title"].specific->setText("...");
 
+	// genre
+	if(!m_btnInfoMap[m_curAudioBtn]->tag()->genre().isEmpty())
+		m_audioDataLabel["genre"].specific->setText(m_btnInfoMap[m_curAudioBtn]->tag()->genre().toCString());
+	else
+		m_audioDataLabel["genre"].specific->setText("...");
 
+	// album
+	if(!m_btnInfoMap[m_curAudioBtn]->tag()->album().isEmpty())
+		m_audioDataLabel["album"].specific->setText(m_btnInfoMap[m_curAudioBtn]->tag()->album().toCString());
+	else
+		m_audioDataLabel["album"].specific->setText("...");
+
+}
+
+void AudioWindow::ChangeCurrentBtn(QPushButton* newBtn)
+{
+	if(!m_curAudioBtn)
+	{
+		m_curAudioBtn = newBtn;
+		m_curAudioBtn->setStyleSheet("background-color: #D3D3D3; border: 2px solid black");
+	}
+	else
+	{
+		m_curAudioBtn->setStyleSheet("background-color: white");
+		m_curAudioBtn = newBtn;
+		m_curAudioBtn->setStyleSheet("background-color: #D3D3D3; border: 2px solid black");
+	}
+}
 
 
 
