@@ -11,6 +11,7 @@ class MainMenuWidget : public QWidget
 	Q_OBJECT
 private:
 
+
 private slots:
 
 protected:

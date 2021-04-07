@@ -2,13 +2,14 @@
 // Created by ivan on 07.04.21.
 //
 
-#ifndef MEDIAPLAYERAPP_AUDIOWIDGET_H
-#define MEDIAPLAYERAPP_AUDIOWIDGET_H
+#ifndef MEDIAPLAYERAPP_AUDIOWINDOWWIDGET_H
+#define MEDIAPLAYERAPP_AUDIOWINDOWWIDGET_H
+
 
 #include "ScrollButton.h"
 
 
-class AudioWidget : public QWidget
+class AudioWindowWidget : public QWidget
 {
 Q_OBJECT
 private:
@@ -72,11 +73,11 @@ private slots:
 protected:
 
 public:
-	explicit AudioWidget(QWidget *parent = nullptr);
+	explicit AudioWindowWidget(QWidget *parent = nullptr);
 
 signals:
 
 };
 
 
-#endif //MEDIAPLAYERAPP_AUDIOWIDGET_H
+#endif //MEDIAPLAYERAPP_AUDIOWINDOWWIDGET_H

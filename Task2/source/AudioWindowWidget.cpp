@@ -2,10 +2,11 @@
 // Created by ivan on 07.04.21.
 //
 
-#include "AudioWidget.h"
+
+#include "AudioWindowWidget.h"
 
 
-AudioWidget::AudioWidget(QWidget* parent):
+AudioWindowWidget::AudioWindowWidget(QWidget* parent):
 		QWidget(parent)
 {
 	this->InitWindow();
@@ -23,25 +24,25 @@ AudioWidget::AudioWidget(QWidget* parent):
 }
 
 /// Initialisation
-void AudioWidget::InitWindow()
+void AudioWindowWidget::InitWindow()
 {
 	this->setFixedSize(WINDOW_SZ_W, WINDOW_SZ_H);
 }
 
-void AudioWidget::InitPlayer()
+void AudioWindowWidget::InitPlayer()
 {
 	m_player = new QMediaPlayer;
-	connect(m_player, &QMediaPlayer::durationChanged,this, &AudioWidget::SetDuration);
+	connect(m_player, &QMediaPlayer::durationChanged,this, &AudioWindowWidget::SetDuration);
 }
 
-void AudioWidget::InitPlaylist()
+void AudioWindowWidget::InitPlaylist()
 {
 	m_playList = new QMediaPlaylist(m_player);
 	m_playList->setPlaybackMode(QMediaPlaylist::Loop);
 	connect(m_playList, SIGNAL(currentIndexChanged(int)), this, SLOT(SetPlayingTrack(int)));
 }
 
-void AudioWidget::InitScrollBar()
+void AudioWindowWidget::InitScrollBar()
 {
 	m_scrollWidget  = new QWidget;
 	m_scrollLayout  = new QVBoxLayout(m_scrollWidget);
@@ -51,7 +52,7 @@ void AudioWidget::InitScrollBar()
 	m_scroll->setWidgetResizable(true);
 }
 
-void AudioWidget::InitAudioFiles()
+void AudioWindowWidget::InitAudioFiles()
 {
 	m_playList->setParent(m_player);
 	m_player->setPlaylist(m_playList);
@@ -61,7 +62,6 @@ void AudioWidget::InitAudioFiles()
 	{
 		// adding audio to playlist
 		m_playList->addMedia(QUrl::fromLocalFile(it.next()));
-
 		// audio meta information
 		auto* audioInfo = new TagLib::FileRef(it.filePath().toStdString().c_str());
 		ScrollButton *btn;
@@ -87,9 +87,10 @@ void AudioWidget::InitAudioFiles()
 		connect(btn,SIGNAL(released()),this,SLOT(SetPlayingTrack()));
 	}
 	m_scroll->setWidget(m_scrollWidget);
+
 }
 
-void AudioWidget::InitUntrackedAudioFiles()
+void AudioWindowWidget::InitUntrackedAudioFiles()
 {
 	QDirIterator it(UNTRACKED_PATH, QStringList() << "*.mp3" << "*.m4a", QDir::Files, QDirIterator::Subdirectories);
 	int index = m_audioButtons.back()->GetIndex() + 1;
@@ -105,7 +106,7 @@ void AudioWidget::InitUntrackedAudioFiles()
 	}
 }
 
-void AudioWidget::InitAudioButtons()
+void AudioWindowWidget::InitAudioButtons()
 {
 	m_playTrackBtn = new QPushButton(this);
 	m_playTrackBtn->setGeometry(WINDOW_SZ_W / 4 + 50,WINDOW_SZ_H - 150,30,30);
@@ -129,7 +130,7 @@ void AudioWidget::InitAudioButtons()
 	connect(m_nextTrackBtn,&QPushButton::released, m_playList,&QMediaPlaylist::next);
 }
 
-void AudioWidget::InitAudioDataLabels()
+void AudioWindowWidget::InitAudioDataLabels()
 {
 	// title
 	m_audioDataLabel["title"].general = new QLabel("title: ", this);
@@ -153,16 +154,16 @@ void AudioWidget::InitAudioDataLabels()
 	m_audioDataLabel["album"].specific->setStyleSheet("border: 2px dotted gray");
 }
 
-void AudioWidget::InitAudioProgress()
+void AudioWindowWidget::InitAudioProgress()
 {
 	m_slider = new QSlider(Qt::Horizontal,this);
 	m_slider->setGeometry(WINDOW_SZ_W / 4 + 10, WINDOW_SZ_H - 200, 500,20);
-	connect(m_player, &QMediaPlayer::positionChanged, this, &AudioWidget::SetSliderPosition);
-	connect(m_slider, &QSlider::sliderMoved, this, &AudioWidget::SetPlayer);
+	connect(m_player, &QMediaPlayer::positionChanged, this, &AudioWindowWidget::SetSliderPosition);
+	connect(m_slider, &QSlider::sliderMoved, this, &AudioWindowWidget::SetPlayer);
 }
 
 /// slots
-void AudioWidget::SetPlayingTrack()
+void AudioWindowWidget::SetPlayingTrack()
 {
 	auto* button = qobject_cast<ScrollButton*>(sender());
 	if (button)
@@ -178,27 +179,27 @@ void AudioWidget::SetPlayingTrack()
 	}
 }
 
-void AudioWidget::PlayAudio()
+void AudioWindowWidget::PlayAudio()
 {
 	m_player->play();
 }
 
-void AudioWidget::SetDuration(qint64 duration)
+void AudioWindowWidget::SetDuration(qint64 duration)
 {
 	m_slider->setRange(0, duration);
 }
 
-void AudioWidget::SetSliderPosition(qint64 pos)
+void AudioWindowWidget::SetSliderPosition(qint64 pos)
 {
 	m_slider->setValue(pos);
 }
 
-void AudioWidget::SetPlayer(qint64 pos)
+void AudioWindowWidget::SetPlayer(qint64 pos)
 {
 	m_player->setPosition(pos);
 }
 
-void AudioWidget::SetPlayingTrack(int pos)
+void AudioWindowWidget::SetPlayingTrack(int pos)
 {
 	auto* button = m_audioButtons[pos];
 	if (button)
@@ -215,7 +216,7 @@ void AudioWidget::SetPlayingTrack(int pos)
 }
 
 /// core
-void AudioWidget::DisplayAudioMetaData()
+void AudioWindowWidget::DisplayAudioMetaData()
 {
 	// title
 	if(!m_btnInfoMap[m_curAudioBtn]->tag()->title().isEmpty())
@@ -237,7 +238,7 @@ void AudioWidget::DisplayAudioMetaData()
 
 }
 
-void AudioWidget::ChangeCurrentBtn(QPushButton* newBtn)
+void AudioWindowWidget::ChangeCurrentBtn(QPushButton* newBtn)
 {
 	if(!m_curAudioBtn)
 	{

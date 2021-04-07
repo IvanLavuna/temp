@@ -10,12 +10,18 @@ set (CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(REQUIRED_LIBS Core Gui Widgets Multimedia MultimediaWidgets)
 set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Multimedia Qt5::MultimediaWidgets)
-set(SOURCE source/main.cpp source/AudioWindow.cpp include/AudioWindow.h
-        source/ScrollButton.cpp include/ScrollButton.h
-        source/AudioWidget.cpp  include/AudioWidget.h
-        source/MainMenuWidget.cpp include/MainMenuWidget.h
-        source/VideoWidget.cpp include/VideoWidget.h
-        source/Player.cpp include/Player.h source/ScrollBar.cpp include/ScrollBar.h)
+set(SOURCE source/main.cpp
+           source/ScrollButton.cpp       include/ScrollButton.h
+           source/MainMenuWidget.cpp     include/MainMenuWidget.h
+           source/MainWindow.cpp         include/MainWindow.h
+           source/VideoWindowWidget.cpp  include/VideoWindowWidget.h
+           source/AudioWindowWidget.cpp  include/AudioWindowWidget.h
+           source/AudioBarWidget.cpp     include/AudioBarWidget.h
+           source/AudioManagerWidget.cpp include/AudioManagerWidget.h
+           source/AudioDataWidget.cpp    include/AudioDataWidget.h
+           source/SearcherWidget.cpp     include/SearcherWidget.h
+           source/AudioEngine.cpp        include/AudioEngine.h
+           source/AudioFile.cpp          include/AudioFile.h)
 
 
 include_directories(include source)
