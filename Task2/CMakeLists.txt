@@ -14,7 +14,8 @@ set(SOURCE source/main.cpp source/AudioWindow.cpp include/AudioWindow.h
         source/ScrollButton.cpp include/ScrollButton.h
         source/AudioWidget.cpp  include/AudioWidget.h
         source/MainMenuWidget.cpp include/MainMenuWidget.h
-        source/VideoWidget.cpp include/VideoWidget.h)
+        source/VideoWidget.cpp include/VideoWidget.h
+        source/Player.cpp include/Player.h source/ScrollBar.cpp include/ScrollBar.h)
 
 
 include_directories(include source)

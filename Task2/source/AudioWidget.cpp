@@ -31,7 +31,7 @@ void AudioWidget::InitWindow()
 void AudioWidget::InitPlayer()
 {
 	m_player = new QMediaPlayer;
-	connect(m_player, &QMediaPlayer::durationChanged,this,&AudioWidget::SetDuration);
+	connect(m_player, &QMediaPlayer::durationChanged,this, &AudioWidget::SetDuration);
 }
 
 void AudioWidget::InitPlaylist()
@@ -39,7 +39,6 @@ void AudioWidget::InitPlaylist()
 	m_playList = new QMediaPlaylist(m_player);
 	m_playList->setPlaybackMode(QMediaPlaylist::Loop);
 	connect(m_playList, SIGNAL(currentIndexChanged(int)), this, SLOT(SetPlayingTrack(int)));
-
 }
 
 void AudioWidget::InitScrollBar()

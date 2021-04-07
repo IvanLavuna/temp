@@ -7,21 +7,6 @@
 
 #include "ScrollButton.h"
 
-#define WINDOW_SZ_H 600
-#define WINDOW_SZ_W 700
-
-/// TODO : rewrite this implementation to be cross-platform
-#define TRACKED_PATH "/home/" + qgetenv("USER") + "/Music"
-#define UNTRACKED_PATH "/home/" + qgetenv("USER")
-#define PLAY_ICON_PATH "../resource/play.png"
-#define STOP_ICON_PATH "../resource/stop.png"
-#define NEXT_ICON_PATH "../resource/next.png"
-
-#define STRINGIFY(x) #x
-#define TOSTRING(x) STRINGIFY(x)
-#define AT __FILE__ ":" TOSTRING(__LINE__)
-#define ERROR_MESSAGE(DESC) ("error: " AT "\n" "Description: " DESC "\n")
-
 
 class AudioWidget : public QWidget
 {
