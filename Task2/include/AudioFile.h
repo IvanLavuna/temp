@@ -17,7 +17,7 @@ private slots:
 protected:
 
 public:
-	explicit AudioFile();
+	explicit AudioFile(){};
 
 signals:
 };

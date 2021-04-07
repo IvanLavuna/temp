@@ -6,20 +6,9 @@
 #define MEDIAPLAYERAPP_AUDIOENGINE_H
 
 
-class AudioEngine : public QObject
+class AudioEngine
 {
-Q_OBJECT
-private:
 
-
-private slots:
-
-protected:
-
-public:
-	explicit AudioEngine();
-
-signals:
 };
 
 

@@ -17,7 +17,7 @@ private slots:
 protected:
 
 public:
-	explicit VideoWindowWidget(QWidget *parent = nullptr);
+	explicit VideoWindowWidget(QWidget *parent = nullptr){};
 
 signals:
 };

@@ -17,7 +17,7 @@ private slots:
 protected:
 
 public:
-	explicit SearcherWidget(QWidget *parent = nullptr);
+	explicit SearcherWidget(QWidget *parent = nullptr){};
 
 signals:
 };

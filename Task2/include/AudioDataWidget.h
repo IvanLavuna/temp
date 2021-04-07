@@ -18,7 +18,7 @@ private slots:
 protected:
 
 public:
-	explicit AudioDataWidget(QWidget *parent = nullptr);
+	explicit AudioDataWidget(QWidget *parent = nullptr){};
 
 signals:
 };

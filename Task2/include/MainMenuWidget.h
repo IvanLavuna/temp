@@ -17,7 +17,7 @@ private slots:
 protected:
 
 public:
-	explicit MainMenuWidget(QWidget *parent = nullptr);
+	explicit MainMenuWidget(QWidget *parent = nullptr){};
 
 	signals:
 };
