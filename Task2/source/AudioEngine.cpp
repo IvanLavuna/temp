@@ -13,6 +13,7 @@ AudioEngine::AudioEngine()
 	m_audioFiles = QVector<AudioFile*>();
 
 	initSignals();
+
 }
 
 /// initialisation
@@ -20,15 +21,16 @@ void AudioEngine::initSignals()
 {
 	/// playlist signals
 	connect(m_playlist, SIGNAL(currentIndexChanged(int)), this, SIGNAL(currentTrackChanged(int)));
+	connect(m_playlist, SIGNAL(mediaChanged(int,int)),this, SIGNAL(audioChanged(int,int)));
+	connect(m_playlist, SIGNAL(mediaInserted(int,int)),this, SIGNAL(audioInserted(int,int)));
+	connect(m_playlist, SIGNAL(mediaRemoved(int,int)),this, SIGNAL(audioRemoved(int,int)));
+
 /** possible connections to be extended
 	connect(m_playlist, SIGNAL(currentMediaChanged(const QMediaContent &)), this, SIGNAL());
 	connect(m_playlist, SIGNAL(loadFailed()), this,  SIGNAL());
 	connect(m_playlist, SIGNAL(loaded()),this,SIGNAL());
 	connect(m_playlist, SIGNAL(mediaAboutToBeInserted(int, int)),this, SIGNAL());
 	connect(m_playlist, SIGNAL(mediaAboutToBeRemoved(int, int)),this, SIGNAL());
-	connect(m_playlist, SIGNAL(mediaChanged(int, int)),this, SIGNAL());
-	connect(m_playlist, SIGNAL(mediaInserted(int, int)),this, SIGNAL());
-	connect(m_playlist, SIGNAL(mediaRemoved(int, int)),this, SIGNAL());
 	connect(m_playlist, SIGNAL(playbackModeChanged(QMediaPlaylist::PlaybackMode)),this, SIGNAL());
 **/
 
@@ -209,4 +211,10 @@ const AudioFile *AudioEngine::getAudioFile(int pos) const
 		return nullptr;
 	}
 }
+
+QVector<AudioFile *> AudioEngine::getAudioFiles() const
+{
+	return m_audioFiles;
+}
+
 

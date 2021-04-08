@@ -13,9 +13,9 @@ class AudioEngine : public QObject
 
 private:
 	/** variables **/
-	QVector<AudioFile*> m_audioFiles;
-	QMediaPlayer* 	     m_player     = nullptr;
+	QVector<AudioFile*>  m_audioFiles;
 	QMediaPlaylist*      m_playlist   = nullptr;
+	QMediaPlayer* 	     m_player     = nullptr;
 
 	/** methods **/
 	/** initialisation **/
@@ -61,6 +61,9 @@ signals:
 	/** position - means in audio bytes array **/
 	void positionChanged(qint64 pos);
 	void volumeChanged(int volume);
+ 	void audioChanged(int, int);
+ 	void audioRemoved(int, int);
+	void audioInserted(int, int);
 
 public:
 	/// get
@@ -69,6 +72,7 @@ public:
 	qint64  position() const noexcept;
 	int     volume() const noexcept;
 	const AudioFile * getAudioFile(int pos) const;
+	QVector<AudioFile* > getAudioFiles() const;
 };
 
 
