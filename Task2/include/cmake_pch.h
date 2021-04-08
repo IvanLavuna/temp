@@ -25,6 +25,7 @@
 #include <QStatusBar>
 #include <QSlider>
 #include <QScrollBar>
+#include <QLineEdit>
 
 /// taglib
 #include <taglib/tag.h>

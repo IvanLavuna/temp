@@ -11,7 +11,7 @@ set (CMAKE_INCLUDE_CURRENT_DIR ON)
 set(REQUIRED_LIBS Core Gui Widgets Multimedia MultimediaWidgets)
 set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Multimedia Qt5::MultimediaWidgets)
 set(SOURCE source/main.cpp
-           source/ScrollButton.cpp       include/ScrollButton.h
+        source/IndexedButton.cpp include/IndexedButton.h
            source/MainMenuWidget.cpp     include/MainMenuWidget.h
            source/MainWindow.cpp         include/MainWindow.h
            source/VideoWindowWidget.cpp  include/VideoWindowWidget.h

@@ -6,6 +6,7 @@
 MainWindow::MainWindow(QWidget* parent):
 		QMainWindow(parent)
 {
+	this->setFixedSize(WINDOW_SZ_W,WINDOW_SZ_H);
 	m_audioWidget = new AudioWindowWidget();
 	this->setCentralWidget(m_audioWidget);
 }

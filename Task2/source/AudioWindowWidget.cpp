@@ -9,7 +9,6 @@
 AudioWindowWidget::AudioWindowWidget(QWidget* parent):
 		QWidget(parent)
 {
-	this->InitWindow();
 //	this->InitPlayer();
 //	this->InitPlaylist();
 //	this->InitScrollBar();
@@ -27,21 +26,21 @@ AudioWindowWidget::AudioWindowWidget(QWidget* parent):
 	m_audioEngine = new AudioEngine();
 	m_audioEngine->generatePlaylist(TRACKED_PATH);
 	m_audioEngine->setLoopPlayBackMode();
-	m_audioEngine->play();
-	m_audioEngine->setPlayingTrack(70);
+//	m_audioEngine->play();
+	m_audioEngine->setPlayingTrack(0);
 
-	stopBtn = new QPushButton("stop",this);
-	playBtn = new QPushButton("play",this);
-	changeIndexBtn = new QPushButton("change", this);
-
-
-	stopBtn->setGeometry(100,100,40,40);
-	playBtn->setGeometry(155,100,40,40);
-
-	connect(stopBtn,SIGNAL(released()),m_audioEngine, SLOT(pause()));
-	connect(playBtn,SIGNAL(released()),m_audioEngine, SLOT(play()));
-	connect(m_audioEngine,SIGNAL(currentTrackChanged(int)), this, SLOT(SetButtonColor(int)));
 /// ---------
+/// temp2 --------
+	layout = new QBoxLayout(QBoxLayout::LeftToRight);
+	this->setLayout(layout);
+
+	audioBarWidget = new AudioBarWidget(m_audioEngine,this);
+	audioBarWidget->setGeometry(100,100,300,300);
+
+
+
+
+
 }
 
 /// Initialisation
@@ -67,6 +66,7 @@ void AudioWindowWidget::InitScrollBar()
 {
 	m_scrollWidget  = new QWidget;
 	m_scrollLayout  = new QVBoxLayout(m_scrollWidget);
+
 	m_scroll = new QScrollArea(this);
 	m_scroll->setBackgroundRole(QPalette::Dark);
 	m_scroll->setGeometry(0,150,WINDOW_SZ_W / 4,WINDOW_SZ_H - 150);
@@ -84,16 +84,16 @@ void AudioWindowWidget::InitAudioFiles()
 		m_playList->addMedia(QUrl::fromLocalFile(it.next()));
 		// audio meta information
 		auto* audioInfo = new TagLib::FileRef(it.filePath().toStdString().c_str());
-		ScrollButton *btn;
+		IndexedButton *btn;
 
 		if(!audioInfo->tag()->title().isEmpty())
 		{
 			/// TODO : fix encoding of some characters to be proper on the screen
-			btn = new ScrollButton(audioInfo->tag()->title().substr(0,16).toCString());
+			btn = new IndexedButton(audioInfo->tag()->title().substr(0,16).toCString());
 		}
 		else
 		{
-			btn = new ScrollButton(it.fileName().toStdString().substr(0,16).c_str());
+			btn = new IndexedButton(it.fileName().toStdString().substr(0,16).c_str());
 		}
 
 		// mapping audioBtn to audioInfo
@@ -117,7 +117,7 @@ void AudioWindowWidget::InitUntrackedAudioFiles()
 	while (it.hasNext())
 	{
 		m_playList->addMedia(QUrl::fromLocalFile(it.next()));
-		auto* btn = new ScrollButton(it.fileName());
+		auto* btn = new IndexedButton(it.fileName());
 		btn->SetIndex(index++);
 		m_audioButtons.push_back(btn);
 		m_audioButtons.back()->setFixedSize(WINDOW_SZ_W / 4 - 35,23);
@@ -185,7 +185,7 @@ void AudioWindowWidget::InitAudioProgress()
 /// slots
 void AudioWindowWidget::SetPlayingTrack()
 {
-	auto* button = qobject_cast<ScrollButton*>(sender());
+	auto* button = qobject_cast<IndexedButton*>(sender());
 	if (button)
 	{
 		m_playList->setCurrentIndex(button->GetIndex());

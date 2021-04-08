@@ -6,6 +6,7 @@
 #define MEDIAPLAYERAPP_AUDIOENGINE_H
 
 #include "AudioFile.h"
+#include "IndexedButton.h"
 
 /// Who must clean memory after this class is an open question
 class AudioEngine : public QObject
@@ -53,6 +54,9 @@ public slots:
 	void addAudio(QMediaContent&);
 	void removeAudio(int pos);
 
+	// TODO : fix this unlogical slot-method
+	/// This slot can only be called by signals!
+	void setCheatingPlayingTrack();
 signals:
 	void currentTrackChanged(int index);
 	void durationChanged(qint64 duration);

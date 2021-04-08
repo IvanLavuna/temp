@@ -35,11 +35,11 @@ void AudioEngine::initSignals()
 **/
 
 	/// player signals
-	connect(m_player, SIGNAL(durationChanged(qint64 duration)),this, SIGNAL(durationChanged(qint64)));
-	connect(m_player, SIGNAL(mutedChanged(bool muted)),this, SIGNAL(mutedChanged(bool)));
-	connect(m_player, SIGNAL(playbackRateChanged(qreal rate)),this, SIGNAL(playbackRateChanged(qreal)));
-	connect(m_player, SIGNAL(positionChanged(qint64 position)),this, SIGNAL(positionChanged(qint64)));
-	connect(m_player, SIGNAL(volumeChanged(int volume)),this, SIGNAL(volumeChanged(int)));
+	connect(m_player, SIGNAL(durationChanged(qint64)),this, SIGNAL(durationChanged(qint64)));
+	connect(m_player, SIGNAL(mutedChanged(bool)),this, SIGNAL(mutedChanged(bool)));
+	connect(m_player, SIGNAL(playbackRateChanged(qreal)),this, SIGNAL(playbackRateChanged(qreal)));
+	connect(m_player, SIGNAL(positionChanged(qint64)),this, SIGNAL(positionChanged(qint64)));
+	connect(m_player, SIGNAL(volumeChanged(int)),this, SIGNAL(volumeChanged(int)));
 
 /** possible connections to be extended
 	connect(m_player, SIGNAL(audioAvailableChanged(bool available)),this,SIGNAL());
@@ -215,6 +215,19 @@ const AudioFile *AudioEngine::getAudioFile(int pos) const
 QVector<AudioFile *> AudioEngine::getAudioFiles() const
 {
 	return m_audioFiles;
+}
+
+void AudioEngine::setCheatingPlayingTrack()
+{
+	auto* btn = qobject_cast<IndexedButton*>(sender());
+	if(btn)
+	{
+		m_playlist->setCurrentIndex(btn->GetIndex());
+	}
+	else
+	{
+		qDebug() << ERROR_MESSAGE("qobject_cast failed.");
+	}
 }
 
 

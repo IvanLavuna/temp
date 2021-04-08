@@ -6,9 +6,10 @@
 #define MEDIAPLAYERAPP_AUDIOWINDOWWIDGET_H
 
 
-#include "ScrollButton.h"
+#include "IndexedButton.h"
 
 #include "AudioEngine.h"
+#include "AudioBarWidget.h"
 
 class AudioWindowWidget : public QWidget
 {
@@ -27,17 +28,25 @@ private:
 	AudioEngine* m_audioEngine;
 	QPushButton* stopBtn;
 	QPushButton* playBtn,
-				*changeIndexBtn;
+	           * changeIndexBtn;
 
 	///----------
 	/// scroll area
 	QScrollArea*	  m_scroll = nullptr;
 	QWidget*		  m_scrollWidget = nullptr;
 	QVBoxLayout*	  m_scrollLayout = nullptr;
-	QVector<ScrollButton*>  m_audioButtons;
+	QVector<IndexedButton*>  m_audioButtons;
+
+	/// temp
+	AudioBarWidget* audioBarWidget = nullptr;
+	QBoxLayout*	  layout;
+	QScrollArea* scroll = nullptr;
+
+
+	////
 
 	/// slider bar (track progress )
-	QSlider*	  m_slider = nullptr;
+	QSlider*	      m_slider = nullptr;
 
 	/// buttons
 	QPushButton*  m_curAudioBtn = nullptr;
