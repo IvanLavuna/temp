@@ -10,17 +10,38 @@ AudioWindowWidget::AudioWindowWidget(QWidget* parent):
 		QWidget(parent)
 {
 	this->InitWindow();
-	this->InitPlayer();
-	this->InitPlaylist();
-	this->InitScrollBar();
-	this->InitAudioFiles();
+//	this->InitPlayer();
+//	this->InitPlaylist();
+//	this->InitScrollBar();
+//	this->InitAudioFiles();
+//
+//	/// TODO : this functions must be run in separate thread
+////	this->InitUntrackedAudioFiles();
+//
+//	this->InitAudioProgress();
+//	this->InitAudioButtons();
+//	this->InitAudioDataLabels();
+//
 
-	/// TODO : this functions must be run in separate thread
-//	this->InitUntrackedAudioFiles();
+/// temp ----
+	m_audioEngine = new AudioEngine();
+	m_audioEngine->generatePlaylist(TRACKED_PATH);
+	m_audioEngine->setLoopPlayBackMode();
+	m_audioEngine->play();
+	m_audioEngine->setPlayingTrack(70);
 
-	this->InitAudioProgress();
-	this->InitAudioButtons();
-	this->InitAudioDataLabels();
+	stopBtn = new QPushButton("stop",this);
+	playBtn = new QPushButton("play",this);
+	changeIndexBtn = new QPushButton("change", this);
+
+
+	stopBtn->setGeometry(100,100,40,40);
+	playBtn->setGeometry(155,100,40,40);
+
+	connect(stopBtn,SIGNAL(released()),m_audioEngine, SLOT(pause()));
+	connect(playBtn,SIGNAL(released()),m_audioEngine, SLOT(play()));
+	connect(m_audioEngine,SIGNAL(currentTrackChanged(int)), this, SLOT(SetButtonColor(int)));
+/// ---------
 }
 
 /// Initialisation
@@ -54,7 +75,6 @@ void AudioWindowWidget::InitScrollBar()
 
 void AudioWindowWidget::InitAudioFiles()
 {
-	m_playList->setParent(m_player);
 	m_player->setPlaylist(m_playList);
 	QDirIterator it(TRACKED_PATH, QStringList() << "*.mp3" << "*.m4a", QDir::Files, QDirIterator::Subdirectories);
 	int index = 0;
@@ -189,6 +209,7 @@ void AudioWindowWidget::SetDuration(qint64 duration)
 	m_slider->setRange(0, duration);
 }
 
+
 void AudioWindowWidget::SetSliderPosition(qint64 pos)
 {
 	m_slider->setValue(pos);
@@ -251,6 +272,11 @@ void AudioWindowWidget::ChangeCurrentBtn(QPushButton* newBtn)
 		m_curAudioBtn = newBtn;
 		m_curAudioBtn->setStyleSheet("background-color: #D3D3D3; border: 2px solid black");
 	}
+}
+
+void AudioWindowWidget::SetButtonColor(int)
+{
+	playBtn->setStyleSheet("background-color: red;");
 }
 
 

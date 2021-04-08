@@ -8,6 +8,7 @@
 
 #include "ScrollButton.h"
 
+#include "AudioEngine.h"
 
 class AudioWindowWidget : public QWidget
 {
@@ -22,6 +23,13 @@ private:
 	QMediaPlayer*     m_player = nullptr;
 	QMediaPlaylist*   m_playList = nullptr;
 
+	///temp----
+	AudioEngine* m_audioEngine;
+	QPushButton* stopBtn;
+	QPushButton* playBtn,
+				*changeIndexBtn;
+
+	///----------
 	/// scroll area
 	QScrollArea*	  m_scroll = nullptr;
 	QWidget*		  m_scrollWidget = nullptr;
@@ -70,6 +78,7 @@ private slots:
 	void SetDuration(qint64 duration);
 	void SetSliderPosition(qint64 pos);
 	void SetPlayer(qint64 pos);
+	void SetButtonColor(int);
 protected:
 
 public:

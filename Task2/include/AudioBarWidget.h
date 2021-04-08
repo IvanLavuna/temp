@@ -7,7 +7,7 @@
 
 #include "AudioEngine.h"
 
-class AudioBarWidget : public QWidget, public AudioEngine
+class AudioBarWidget : public QWidget
 {
 Q_OBJECT
 private:
