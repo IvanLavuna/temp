@@ -2,4 +2,4 @@
 // Created by ivan on 07.04.21.
 //
 
-#include "MainMenuWidget.h"
+#include "VideoWindow.h"
