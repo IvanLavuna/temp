@@ -26,19 +26,10 @@ AudioWindow::AudioWindow(QWidget* parent):
 	m_audioEngine = new AudioEngine();
 	m_audioEngine->generatePlaylist(TRACKED_PATH);
 	m_audioEngine->setLoopPlayBackMode();
-//	m_audioEngine->play();
-	m_audioEngine->setPlayingTrack(0);
 
-/// ---------
-/// temp2 --------
-	layout = new QBoxLayout(QBoxLayout::LeftToRight);
-	this->setLayout(layout);
+	audioManager = new AudioManager(m_audioEngine,this);
 
-	audioBarWidget = new AudioBar(m_audioEngine,this);
-	audioBarWidget->setGeometry(100,100,300,300);
-
-
-
+	audioManager->setGeometry(100,200,300,100);
 
 
 }

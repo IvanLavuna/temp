@@ -55,6 +55,7 @@ void AudioEngine::initSignals()
 	connect(m_player, SIGNAL(videoAvailableChanged(bool videoAvailable)),this,SIGNAL());
 **/
 
+	/// other
 }
 
 /// public slots
@@ -221,5 +222,8 @@ int AudioEngine::mediaCount() const noexcept
 {
 	return m_playlist->mediaCount();
 }
+
+
+
 
 

@@ -24,7 +24,7 @@ private:
 public:
 	/** Constructors / destructor **/
 	AudioEngine();
-	~AudioEngine() = default;
+	~AudioEngine() override = default;
 
 public slots:
 	/// fills audioFiles and playlist

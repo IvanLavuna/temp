@@ -17,10 +17,9 @@ set(SOURCE source/main.cpp
            source/VideoWindowWidget.cpp  include/VideoWindowWidget.h
         source/AudioWindow.cpp include/AudioWindow.h
         source/AudioBar.cpp include/AudioBar.h
-           source/AudioManagerWidget.cpp include/AudioManagerWidget.h
+        source/AudioManager.cpp include/AudioManager.h
            source/AudioDataWidget.cpp    include/AudioDataWidget.h
-           source/SearcherWidget.cpp     include/SearcherWidget.h
-           source/AudioEngine.cpp        include/AudioEngine.h
+        source/AudioEngine.cpp        include/AudioEngine.h
            source/AudioFile.cpp          include/AudioFile.h)
 
 

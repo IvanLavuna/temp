@@ -10,7 +10,7 @@
 
 #include "AudioEngine.h"
 #include "AudioBar.h"
-
+#include "AudioManager.h"
 class AudioWindow : public QWidget
 {
 Q_OBJECT
@@ -42,8 +42,8 @@ private:
 	QBoxLayout*	  layout;
 	QScrollArea* scroll = nullptr;
 
-
-	////
+	/// AudioManager
+	AudioManager * audioManager;
 
 	/// slider bar (track progress )
 	QSlider*	      m_slider = nullptr;

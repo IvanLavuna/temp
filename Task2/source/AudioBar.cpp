@@ -46,6 +46,8 @@ void AudioBar::changeCurrentButton(int pos)
 		m_activeBtn = m_audioButtons[pos];
 		m_activeBtn->setStyleSheet("background-color: #D3D3D3; border: 2px dotted black");
 	}
+
+	m_engine->play();
 }
 
 void AudioBar::addItem(int pos)
