@@ -2,16 +2,16 @@
 // Created by ivan on 07.04.21.
 //
 
-#ifndef MEDIAPLAYERAPP_AUDIOWINDOWWIDGET_H
-#define MEDIAPLAYERAPP_AUDIOWINDOWWIDGET_H
+#ifndef MEDIAPLAYERAPP_AUDIOWINDOW_H
+#define MEDIAPLAYERAPP_AUDIOWINDOW_H
 
 
 #include "IndexedButton.h"
 
 #include "AudioEngine.h"
-#include "AudioBarWidget.h"
+#include "AudioBar.h"
 
-class AudioWindowWidget : public QWidget
+class AudioWindow : public QWidget
 {
 Q_OBJECT
 private:
@@ -38,7 +38,7 @@ private:
 	QVector<IndexedButton*>  m_audioButtons;
 
 	/// temp
-	AudioBarWidget* audioBarWidget = nullptr;
+	AudioBar* audioBarWidget = nullptr;
 	QBoxLayout*	  layout;
 	QScrollArea* scroll = nullptr;
 
@@ -91,11 +91,11 @@ private slots:
 protected:
 
 public:
-	explicit AudioWindowWidget(QWidget *parent = nullptr);
+	explicit AudioWindow(QWidget *parent = nullptr);
 
 signals:
 
 };
 
 
-#endif //MEDIAPLAYERAPP_AUDIOWINDOWWIDGET_H
+#endif //MEDIAPLAYERAPP_AUDIOWINDOW_H

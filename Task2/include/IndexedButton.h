@@ -12,7 +12,9 @@ class IndexedButton : public QPushButton
 private:
 	int m_index;
 
+	void initSignals() const;
 private slots:
+	void emitReleasedSignal();
 
 public slots:
 
@@ -27,7 +29,7 @@ public:
 	int GetIndex() const;
 
 signals:
-
+	void released(int);
 
 };
 

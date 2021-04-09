@@ -2,8 +2,8 @@
 // Created by ivan on 07.04.21.
 //
 
-#ifndef MEDIAPLAYERAPP_AUDIOBARWIDGET_H
-#define MEDIAPLAYERAPP_AUDIOBARWIDGET_H
+#ifndef MEDIAPLAYERAPP_AUDIOBAR_H
+#define MEDIAPLAYERAPP_AUDIOBAR_H
 
 #include "AudioEngine.h"
 
@@ -11,16 +11,15 @@
  * Class for displaying and managing buttons each one of which
  * represents an audio file( track )
  * **/
- /// TODO: Rename to AudioBar
-class AudioBarWidget : public QWidget
+class AudioBar : public QWidget
 {
 Q_OBJECT
 private:
 	/// variables
-	AudioEngine*           m_engine;
+	AudioEngine*           m_engine = nullptr;
 
-	/// this window layout
-	QVBoxLayout* 		   m_mainLayout;
+	/// this widget layout
+	QVBoxLayout* 		   m_mainLayout = nullptr;
 
 	/// search edit line for searching audio
 	QLineEdit*   		   m_searchLine = nullptr;
@@ -32,16 +31,19 @@ private:
 
 	/// buttons to be inside scroll area
 	QVector<IndexedButton*>  m_audioButtons;
+	IndexedButton*	 		 m_activeBtn = nullptr;
 
-private slots:
-
-protected:
+public slots:
+	void changeCurrentButton(int);
+	void addItem(int pos);
+//	void removeItem(int pos);
 
 public:
-	explicit AudioBarWidget(AudioEngine* engine, QWidget *parent = nullptr);
+	explicit AudioBar(AudioEngine* engine, QWidget *parent = nullptr);
 
 signals:
+
 };
 
 
-#endif //MEDIAPLAYERAPP_AUDIOBARWIDGET_H
+#endif //MEDIAPLAYERAPP_AUDIOBAR_H

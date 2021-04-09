@@ -3,10 +3,10 @@
 //
 
 
-#include "AudioWindowWidget.h"
+#include "AudioWindow.h"
 
 
-AudioWindowWidget::AudioWindowWidget(QWidget* parent):
+AudioWindow::AudioWindow(QWidget* parent):
 		QWidget(parent)
 {
 //	this->InitPlayer();
@@ -34,7 +34,7 @@ AudioWindowWidget::AudioWindowWidget(QWidget* parent):
 	layout = new QBoxLayout(QBoxLayout::LeftToRight);
 	this->setLayout(layout);
 
-	audioBarWidget = new AudioBarWidget(m_audioEngine,this);
+	audioBarWidget = new AudioBar(m_audioEngine,this);
 	audioBarWidget->setGeometry(100,100,300,300);
 
 
@@ -44,25 +44,25 @@ AudioWindowWidget::AudioWindowWidget(QWidget* parent):
 }
 
 /// Initialisation
-void AudioWindowWidget::InitWindow()
+void AudioWindow::InitWindow()
 {
 	this->setFixedSize(WINDOW_SZ_W, WINDOW_SZ_H);
 }
 
-void AudioWindowWidget::InitPlayer()
+void AudioWindow::InitPlayer()
 {
 	m_player = new QMediaPlayer;
-	connect(m_player, &QMediaPlayer::durationChanged,this, &AudioWindowWidget::SetDuration);
+	connect(m_player, &QMediaPlayer::durationChanged,this, &AudioWindow::SetDuration);
 }
 
-void AudioWindowWidget::InitPlaylist()
+void AudioWindow::InitPlaylist()
 {
 	m_playList = new QMediaPlaylist(m_player);
 	m_playList->setPlaybackMode(QMediaPlaylist::Loop);
 	connect(m_playList, SIGNAL(currentIndexChanged(int)), this, SLOT(SetPlayingTrack(int)));
 }
 
-void AudioWindowWidget::InitScrollBar()
+void AudioWindow::InitScrollBar()
 {
 	m_scrollWidget  = new QWidget;
 	m_scrollLayout  = new QVBoxLayout(m_scrollWidget);
@@ -73,7 +73,7 @@ void AudioWindowWidget::InitScrollBar()
 	m_scroll->setWidgetResizable(true);
 }
 
-void AudioWindowWidget::InitAudioFiles()
+void AudioWindow::InitAudioFiles()
 {
 	m_player->setPlaylist(m_playList);
 	QDirIterator it(TRACKED_PATH, QStringList() << "*.mp3" << "*.m4a", QDir::Files, QDirIterator::Subdirectories);
@@ -110,7 +110,7 @@ void AudioWindowWidget::InitAudioFiles()
 
 }
 
-void AudioWindowWidget::InitUntrackedAudioFiles()
+void AudioWindow::InitUntrackedAudioFiles()
 {
 	QDirIterator it(UNTRACKED_PATH, QStringList() << "*.mp3" << "*.m4a", QDir::Files, QDirIterator::Subdirectories);
 	int index = m_audioButtons.back()->GetIndex() + 1;
@@ -126,7 +126,7 @@ void AudioWindowWidget::InitUntrackedAudioFiles()
 	}
 }
 
-void AudioWindowWidget::InitAudioButtons()
+void AudioWindow::InitAudioButtons()
 {
 	m_playTrackBtn = new QPushButton(this);
 	m_playTrackBtn->setGeometry(WINDOW_SZ_W / 4 + 50,WINDOW_SZ_H - 150,30,30);
@@ -150,7 +150,7 @@ void AudioWindowWidget::InitAudioButtons()
 	connect(m_nextTrackBtn,&QPushButton::released, m_playList,&QMediaPlaylist::next);
 }
 
-void AudioWindowWidget::InitAudioDataLabels()
+void AudioWindow::InitAudioDataLabels()
 {
 	// title
 	m_audioDataLabel["title"].general = new QLabel("title: ", this);
@@ -174,16 +174,16 @@ void AudioWindowWidget::InitAudioDataLabels()
 	m_audioDataLabel["album"].specific->setStyleSheet("border: 2px dotted gray");
 }
 
-void AudioWindowWidget::InitAudioProgress()
+void AudioWindow::InitAudioProgress()
 {
 	m_slider = new QSlider(Qt::Horizontal,this);
 	m_slider->setGeometry(WINDOW_SZ_W / 4 + 10, WINDOW_SZ_H - 200, 500,20);
-	connect(m_player, &QMediaPlayer::positionChanged, this, &AudioWindowWidget::SetSliderPosition);
-	connect(m_slider, &QSlider::sliderMoved, this, &AudioWindowWidget::SetPlayer);
+	connect(m_player, &QMediaPlayer::positionChanged, this, &AudioWindow::SetSliderPosition);
+	connect(m_slider, &QSlider::sliderMoved, this, &AudioWindow::SetPlayer);
 }
 
 /// slots
-void AudioWindowWidget::SetPlayingTrack()
+void AudioWindow::SetPlayingTrack()
 {
 	auto* button = qobject_cast<IndexedButton*>(sender());
 	if (button)
@@ -199,28 +199,28 @@ void AudioWindowWidget::SetPlayingTrack()
 	}
 }
 
-void AudioWindowWidget::PlayAudio()
+void AudioWindow::PlayAudio()
 {
 	m_player->play();
 }
 
-void AudioWindowWidget::SetDuration(qint64 duration)
+void AudioWindow::SetDuration(qint64 duration)
 {
 	m_slider->setRange(0, duration);
 }
 
 
-void AudioWindowWidget::SetSliderPosition(qint64 pos)
+void AudioWindow::SetSliderPosition(qint64 pos)
 {
 	m_slider->setValue(pos);
 }
 
-void AudioWindowWidget::SetPlayer(qint64 pos)
+void AudioWindow::SetPlayer(qint64 pos)
 {
 	m_player->setPosition(pos);
 }
 
-void AudioWindowWidget::SetPlayingTrack(int pos)
+void AudioWindow::SetPlayingTrack(int pos)
 {
 	auto* button = m_audioButtons[pos];
 	if (button)
@@ -237,7 +237,7 @@ void AudioWindowWidget::SetPlayingTrack(int pos)
 }
 
 /// core
-void AudioWindowWidget::DisplayAudioMetaData()
+void AudioWindow::DisplayAudioMetaData()
 {
 	// title
 	if(!m_btnInfoMap[m_curAudioBtn]->tag()->title().isEmpty())
@@ -259,7 +259,7 @@ void AudioWindowWidget::DisplayAudioMetaData()
 
 }
 
-void AudioWindowWidget::ChangeCurrentBtn(QPushButton* newBtn)
+void AudioWindow::ChangeCurrentBtn(QPushButton* newBtn)
 {
 	if(!m_curAudioBtn)
 	{
@@ -274,7 +274,7 @@ void AudioWindowWidget::ChangeCurrentBtn(QPushButton* newBtn)
 	}
 }
 
-void AudioWindowWidget::SetButtonColor(int)
+void AudioWindow::SetButtonColor(int)
 {
 	playBtn->setStyleSheet("background-color: red;");
 }

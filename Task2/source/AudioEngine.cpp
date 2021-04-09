@@ -217,17 +217,9 @@ QVector<AudioFile *> AudioEngine::getAudioFiles() const
 	return m_audioFiles;
 }
 
-void AudioEngine::setCheatingPlayingTrack()
+int AudioEngine::mediaCount() const noexcept
 {
-	auto* btn = qobject_cast<IndexedButton*>(sender());
-	if(btn)
-	{
-		m_playlist->setCurrentIndex(btn->GetIndex());
-	}
-	else
-	{
-		qDebug() << ERROR_MESSAGE("qobject_cast failed.");
-	}
+	return m_playlist->mediaCount();
 }
 
 

@@ -6,14 +6,14 @@
 #define MEDIAPLAYERAPP_MAINWINDOW_H
 
 
-#include "AudioWindowWidget.h"
+#include "AudioWindow.h"
 
 
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
 private:
-	AudioWindowWidget * m_audioWidget = nullptr;
+	AudioWindow * m_audioWidget = nullptr;
 
 private slots:
 

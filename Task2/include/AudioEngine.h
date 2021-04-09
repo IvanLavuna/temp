@@ -54,9 +54,6 @@ public slots:
 	void addAudio(QMediaContent&);
 	void removeAudio(int pos);
 
-	// TODO : fix this unlogical slot-method
-	/// This slot can only be called by signals!
-	void setCheatingPlayingTrack();
 signals:
 	void currentTrackChanged(int index);
 	void durationChanged(qint64 duration);
@@ -75,6 +72,7 @@ public:
 	qreal   playbackRate() const noexcept;
 	qint64  position() const noexcept;
 	int     volume() const noexcept;
+	int 	mediaCount() const noexcept;
 	const AudioFile * getAudioFile(int pos) const;
 	QVector<AudioFile* > getAudioFiles() const;
 };
