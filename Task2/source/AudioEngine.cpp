@@ -87,7 +87,8 @@ void AudioEngine::generatePlaylist(QString &&path)
 
 void AudioEngine::generatePlaylist(QString &path)
 {
-	QDirIterator it(TRACKED_PATH,QStringList() << "*.mp3" << "*.m4a", QDir::Files, QDirIterator::Subdirectories);
+	QDirIterator it(TRACKED_PATH,QStringList() << "*.mp3" << "*.m4a" << "*.mp4", QDir::Files,
+				 QDirIterator::Subdirectories);
 	for( ; it.hasNext(); it.next())
 	{
 		m_playlist->addMedia(QUrl::fromLocalFile(it.filePath()));
