@@ -27,11 +27,9 @@ AudioWindow::AudioWindow(QWidget* parent):
 	m_audioEngine->generatePlaylist(TRACKED_PATH);
 	m_audioEngine->setLoopPlayBackMode();
 
-	audioManager = new AudioManager(m_audioEngine,this);
+	audioData = new AudioData(m_audioEngine,this);
 
-	audioManager->setGeometry(100,200,300,100);
-
-
+	audioData->setGeometry(100,100,200,200);
 }
 
 /// Initialisation

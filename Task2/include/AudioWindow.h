@@ -8,9 +8,10 @@
 
 #include "IndexedButton.h"
 
-#include "AudioEngine.h"
 #include "AudioBar.h"
 #include "AudioManager.h"
+#include "AudioData.h"
+
 class AudioWindow : public QWidget
 {
 Q_OBJECT
@@ -61,6 +62,8 @@ private:
 	/// audio meta labels map
 	QMap<QString, MetaLabel> m_audioDataLabel;
 
+	/// temp
+	AudioData* audioData = nullptr;
 
 	/** methods **/
 	/** initialisation **/
